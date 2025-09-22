@@ -120,3 +120,9 @@ This data set includes additional variables that could be used to further explor
 -   Apply the model to offensive vs. defensive rebounds to determine if there is meaningful difference
 
 Further analysis of this relationship could help yield useful insights that could be used by those interested improved predictions for player performance.
+
+## References
+
+<https://data.scorenetwork.org/basketball/nba_wingspans_and_performance.html>
+
+##Appendix: Data Definitions

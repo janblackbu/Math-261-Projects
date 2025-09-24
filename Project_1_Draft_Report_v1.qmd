@@ -63,9 +63,13 @@ The data set received was very complete with just one row needing to be removed 
 
 The first step of the analysis was an evaluation of both Wingspan and Wingspan Advantage as the predictor variable. The concern with Wingspan Advantage as the predictor variable is that it reflects the difference between two potentially correlated variables: player height and wingspan. This complication in the metric could result in some confounding effects when modeling the relationship with Total Rebounds. This possibility was investigated by analyzaing a scatter plot of wingspan advantage and total reboundsd as seen in Exhibit 2 below. As can be seen, there is fair degree of dispersion and there appears to be little basis for thinking a linear relationship exists between these two variables.
 
+\newpage
+
 **Exhibit 2:** Scatter Plot of Wingspan Advantage vs. Total Rebounds
 
 ![](images/clipboard-2889153114.png){width="587"}
+
+\newpage
 
 Exhibit 3 displays the same analysis using Wingspan versus Total Rebounds. This scatter plot illustrates that there is stronger case to be made for their to be a linear relationship with Total Rebounds and supports the decision to select Wingspan as the predictor variable.
 
@@ -145,6 +149,8 @@ Foot Notes Sources:
 1: <https://en.wikipedia.org/wiki/Forbes_list_of_the_most_valuable_NBA_teams>
 
 2: <https://news.mit.edu/2025/basketball-analytics-investment-nba-wins-and-other-successes-0325>
+
+\newpage
 
 ## Appendix: Data Definitions
 

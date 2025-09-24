@@ -5,124 +5,174 @@ format: pdf
 editor: visual
 ---
 
-**Title:** Linear Regression of Total Rebounds vs. Player Wingspan\
+**Title:** Exploration of NBA Player Wingspan on Rebound Performance\
 **Author:** Jan Blackburn, Math 261A\
 **Date:** September 24, 2025\
 
 ## Abstract
 
-Analysis of NBA statistics can be useful in helping evaluate the potential performance of NBA players and their teams. This paper examines the relationship between a players wingspan (measured distance of their arms from fingertip to fingertip) as a predictor of total rebounds. Wingspan has been found to be a key physical attribute of NBA players, contributing to their defensive capabilities as measured by the number of rebounds achieved. This paper evaluated this premise by evaluating data from the \[enter data set name\] and regressing the number of rebounds obtained in the last 100 ball possessions using a linear regression model. Model results suggest that a linear relationship does appear to exist but that not all critical regression assumptions are strictly met. Based on these findings, further analyses are recommended to enhance the model fit to improve predictive accuracy.
+Analysis of professional basketball players physical attributes and their potential impact performance is critical to helping professional basketball teams improve their odds of winning in order to draw in fans and increase team revenues. This paper seeks to examine one key physical attribute, wingspan as a potential predictor on total rebounds which is an important measure of player's defensive contribution. This paper evaluates the relationship between these two variables by applying a simple linear regression using player level data for the 2024-25 National Basketball Association (NBA) statistics. In the course of conducting this analysis, it is found that there is a relationship between a player's wingspan and the total number of rebounds. This is followed with a discussion on how a more robust model can be developed by building a multiple regression model as path for further exploration.
 
 ## Introduction
 
-Professional Sports in the United States is a big business. This motivates a great deal of analysis by those involved in professional sports including fans, sports analysts and talent scouts to use statistical analysis to improve their understanding of key attributes that contribute to performance. This is especially true in professional basketball where physical attributes such as height can be a key indicator of their ability to perform competitively at a professional level.
+Professional basket ball in the United States is a big business as the market value of NBA teams increasing substantially in recent years ([1](https://en.wikipedia.org/wiki/Forbes_list_of_the_most_valuable_NBA_teams)). This trend has increased the importance of finding and recruiting players who can improve team performance and helped spawn a robust literature in evaluating player performance that is viewed as a key area of investment[2](https://news.mit.edu/2025/basketball-analytics-investment-nba-wins-and-other-successes-0325). One area of analysis and research is evaluating the physical attributes as a potential predictor of performance on a number of offensive and defensive performance metrics.
 
-In addition to height, **wingspan** defined as the distance from fingertip to finger on a player with their arms outstretched is frequently used as a key physical attribute that can provide players with advantages in defensive performance as measured by the number of steals, blocked shots and rebounds. Since wingspans are relative to players height, an alternative metric **wingspan advantage** is used and this is measured as a player's wingspan - height. For example, a player with wingspan of 80 inches and height of 72 inches will have wingspan advantage of 8 inches. A larger wingspan advantage is considered to be more beneficial to defensive performance.
+When thinking of physical attributes for basketball players, height is what comes to mind. In addition to height, wingspan is frequently used as a key physical attribute that can provide players with advantages in defensive performance. Common metrics used to evaluate defensive performance include rebounds, steals and blocks which are defined in more detail in the Data section. After evaluation of these metrics in the data set, Total Blocks was selected since the amount of data available is more robust and amenable to regression modeling.
+
+A player's wingspan is often correlated to a player's height, prompting use of an alternate measure,Wingspan Advantage, which measures the difference between a player's wingspan and height. Wingspan Advantage most often has a positive value (wingspan \> height) with a higher value suggesting greater potential for defensive capability. After evaluation between Wingspan and Wingspan Advantage, for which measure would be better as a the predictor variable, Wingspan was selected due to potential confounding issues with Wingspan Advantage.
+
+The resulting regression model showed that there is a linear relationship between Wingspan and Total Rebounds but there is the opportunity to explore a more robust regression model by incorporating additional variables into a multiple regression model.
+
+The rest of this paper provides an overview of the data sources, methods and results from the analysis as well as a discussion of future model changes that can be explored to improve model fit and predictive power.
 
 ## Data
 
-The data for this study was sourced from [NBA Data](https://data.scorenetwork.org/basketball/nba_wingspans_and_performance.html)[.]{.underline} This dataset contains player level statistics based on 100 ball possessions (i.e., the last last 100 times the player handled the ball) collected from the 2024-25 National Basketball Association (NBA) season. This data set was compiled from a number of online data sources by the author.
+The data for this study was sourced from [NBA Data](https://data.scorenetwork.org/basketball/nba_wingspans_and_performance.html)[.]{.underline} This data set contains player level statistics collected from the 2024-25 NBA season. Many of the metrics are normalized to averages over 100 ball possessions in order to account for differences in the number of games and minutes played. This data set was compiled from a number of online data sources by the original author of the data set.
 
-In all, this data set contains 419 rows, representing statistics for each player and 26 columns that include descriptive and numerical data about the players and several key performance statistics. A summary of the variables is included in the Appendix.
+The data set contains 419 rows and 26 columns that includes information and statistics for each player including player physical attributes and a number of offensive and defensive performance metrics. A summary of the variables and definitions is included in the Appendix.
 
-Since **wingspan advantage** is considered a key physical characteristic that can contribute to enhanced performance, we are using this variable as our predictor variable. There are many metrics used to measure defensive performance including, rebounds, steals and blocks. Since steals and blocks occur less often in games relative to rebounds as shown in the exhibit below, therefore, we selected to use rebounds as the response variable in this paper to ensure sufficient variability in the data as shown in the exhibit below.
+Since Wingspan and Wingspan Advantage are key physical characteristics thought to contribute to enhanced defensive performance, each of these variables was evaluated as the predictor variable for the regression model. The definition of each measure is specified below:
+
+-   **Wingspan (inches):** Measure of the length of a player's arms from the fingertips when the arms are held out parallel to the ground.
+
+-   **Wingspan Advantage (inches):** Difference between a player's Wingspan and Height. This statistic is often positive (i.e., Wingspan \> Height) with a larger value being preferred.
+
+In the data set, the following measures of defensive performance were available. Each is measured as the average over 100 ball possessions:
+
+-   **Rebounds:** Player takes possession of the ball after a field goal, changing ball possession between the teams.
+
+-   **Steals:** Player takes the ball from an opposing player, eliminating the opposing team's opportunity to score and creating new opportunity for the player's team to score
+
+-   **Blocks:** Player blocks a field goal attempt from the opposing team, preventing a potential scoring opportunity and initiating a potential for change in ball possession
+
+Rebounds are considered more important than Steals or Blocks since they directly create new possessions and additional scoring opportunities and occur more often as shown in in Exhibit 1. Based on these factors, Total Rebounds was selected as the response variable for the regression model.
 
 **Exhibit 1:** Key Measures and Statistics
 
-| Metric             | Min  |  Q1  | Median | Mean |  Q3  |  Max  |
-|--------------------|:----:|:----:|:------:|:----:|:----:|:-----:|
-| Wingspan Advantage | -1.5 |  3   |  4.5   | 4.46 | 6.13 | 10.75 |
-| Rebounds           |  3   |  6   |   8    | 9.1  | 11.3 |  23   |
-| Blocks             |  0   | 0.43 |  0.8   | 1.02 | 1.38 |  5.6  |
-| Steals             |  0   | 1.2  |  1.6   | 1.7  |  2   |  5.1  |
+| Metric             | Min  |  Q1  | Median | Mean |  Q3  | Max  |
+|--------------------|:----:|:----:|:------:|:----:|:----:|:----:|
+| Wingspan           | 73.0 | 80.0 |  82.3  | 82.4 | 85.0 | 96.0 |
+| Wingspan Advantage | -1.5 | 3.0  |  4.5   | 4.5  | 6.1  | 10.8 |
+| Rebounds           | 3.0  | 6.0  |  8.0   | 9.1  | 11.3 | 23.0 |
+| Blocks             | 0.0  | 0.4  |  0.8   | 1.0  | 1.4  | 5.6  |
+| Steals             | 0.0  | 1.2  |  1.6   | 1.7  | 2.0  | 5.1  |
 
-An evaluation of the data was performed, and we removed a row that contained NA values so the resulting data set contains 418 rows in total.
+The data set received was very complete with just one row needing to be removed due to NA values so the data set ended up at 418 rows. An inspection of the data did not identify any extreme data suggesting that further data cleansing or transformation was warranted.
 
 ## Methods
 
-Since we are applying a simple linear regression, we analyzed the data to validate key assumptions needed for a valid regression model:
-
--   Existence of a linear relationship between trb and wing_span advantage
-
--   Residuals have a 0 mean, are independent and have a constant variance
-
-To validate assumptions, we initially generated a scatter plot of trb vs. wingspan_advantage as shown below after importing the data in R:
+The first step of the analysis was an evaluation of both Wingspan and Wingspan Advantage as the predictor variable. The concern with Wingspan Advantage as the predictor variable is that it reflects the difference between two potentially correlated variables: player height and wingspan. This complication in the metric could result in some confounding effects when modeling the relationship with Total Rebounds. This possibility was investigated by analyzaing a scatter plot of wingspan advantage and total reboundsd as seen in Exhibit 2 below. As can be seen, there is fair degree of dispersion and there appears to be little basis for thinking a linear relationship exists between these two variables.
 
 **Exhibit 2:** Scatter Plot of Wingspan Advantage vs. Total Rebounds
 
 ![](images/clipboard-2889153114.png){width="587"}
 
-As can be from Exhibit 2 above, there does not appear to be a clear linear relationship between the response and predictor variables. The fitted linear line suggests that there is slightly positive correlation between the two variables. After evaluation of this exhibit, we simplified the predictor variable by replacing using wingspan advantage with wingspan variable since wingspan advantage may include other confounding influences represented in wingspan and height.
-
-The scatter plot of between wingspan and total rebounds shows a clear linear relationship has illustrated in Exhibit 3 below.
+Exhibit 3 displays the same analysis using Wingspan versus Total Rebounds. This scatter plot illustrates that there is stronger case to be made for their to be a linear relationship with Total Rebounds and supports the decision to select Wingspan as the predictor variable.
 
 **Exhibit 3:** Scatter Plot of Wingspan vs. Total Rebounds
 
 ![](images/clipboard-2320005347.png){width="606"}
 
-Based on the demonstration of a linear relationship between the predictor and response variables and we proceeded with fitting a simple linear regression model to the data using the lm() function in R.
+With the response and and predictor variables selected, the relationship between Wingspan and Total Rebounds was evaluated using a simple linear regression based on the least squares methodology using the R statistical analysis package. The specific attributes of the model are specified below:
 
-## Results
+![](images/clipboard-3818895440.png){fig-align="center"}
 
-The following linear regression model was fit to the data:
+-   $R_i$**:** Total rebounds achieved by player *i* in the last 100 ball possessions
 
-$(trb)_i = \beta_0 + \beta_1 \cdot \text{(wingspan_inches)}_i + \varepsilon_i$
+-   $B_0$: Intercept for the regression model
 
-![](images/clipboard-2422896480.png){width="294"}
+-   $B_1$: Slope of the regression model that measures the average number of additional rebounds per additional inch of player wingspan
 
-The regression results are summarized below in Exhibit 4.
+-   $W_i$: Wingspan of player i measured in inches
 
-**Exhibit 4:** Linear Regression Results
+-   $e_i$: Error term of the regression model
 
--   **The F-statistic is 379.9 (1, 416df) with p-value \<2e-16 and** $R^2$ **= 0.4773.**
+For the regression model to be valid, key assumptions for the model's error terms need to be valid including independence, zero expected value and constant variance. A residuals plot was generated to evaluate this visually as shown in Exhibit 4. Visually there didn't appear to be any relationship between the residuals and a player's Wingspan. The variance does appear to increase slightly as Wingspan increases, suggesting that variance is not constant. This could impact the quality of the parameter estimates and generate less precise predictions.
 
-| Parameter       | Estimate  | Std. Error | t-statistic | p-value |
-|-----------------|:---------:|:----------:|:-----------:|:-------:|
-| Intercept       | -52.18849 |  3.14692   |   -16.58    | \<2e-16 |
-| wingspan_inches |  0.74191  |  0.03807   |    19.49    | \<2e-16 |
-
-**Residuals**
-
-|  Min  |  Q1   | Median |  Q3  |  Max  |
-|:-----:|:-----:|:------:|:----:|:-----:|
-| -6.70 | -1.97 | -0.33  | 1.51 | 10.32 |
-
-These regression results suggest that there is relationship between wingspan and total rebounds since all p-values are negligible and R\^2 is near 0.5. The coefficient estimate suggests that a one inch increase in wingspan contributes to approximately 0.74 additional rebounds over 100 ball possessions and is consistent with the expected results. The median residuals are near 0 suggesting that a close approximation to 0.
-
-We next looked to validate the assumptions regarding distribution of residuals by creating a scatter plot of the residuals to validate independence and constant variance assumptions. The resulting residual plot is shown below in Exhibit 5. Visual inspection suggests that the residuals increase slightly as wingspan increases, suggesting variance is not constant.
-
-**Exhibit 5:** Residual Plots
+**Exhibit 4:** Residual Plots
 
 ![](images/clipboard-1229148351.png)
 
-We also tested to see if the residuals were normally distributed by generating a Q-Q plot which is shown in Exhibit 6 below. As can be seen, the data appears to be approximately normal between the -2 to 2 of the theoretical quantiles but diverges from the line at the tails, suggesting slightly heavier tails for the extremes. Overall, however, the residuals appear to be approximately normally distributed.
+Normality of the residuals was also analyzed using a Q-Q plot shown in Exhibit 5. The dispersion of points appears to be near normal around the center but diverges at either end suggesting that the tails are heavier than a normal distribution. Considering the large sample size (n=418) this is not a major concern nor would it have major implications for the robustness of the regression model.
 
-**Exhibit 6:** Q-Q Plot
+**Exhibit 5:** Q-Q Plot
 
 ![](images/clipboard-1537885989.png)
 
-Based on the modeling results have generated the following key takeaways:
+## Results
 
--   Our initial approach to use wingspan_advantage as the predictor variable did not yield an apparent linear relationship. We believe this due the potential confounding impacts of having wingspan and height in the calculation
+The results of the simple linear regression are shown in Exhibit 5. Overall, the model is statistically significant with an high t-statistic and low p-value. Based on the slope estimate, it appears that a one inch increase in Wingspan results in additional 0.74 Total Rebounds over 100 ball possessions. This finding is consistent with expected results. The $R^2$ value of nearly 0.5 suggests some positive relationship with nearly half of the model variance explained.
 
--   There does appear to be a linear relationship between wingspan and total rebounds as demonstrated through visual inspection and the results of the linear regression
+**Exhibit 5:** Linear Regression Results
+
+-   **The F-statistic is 379.9 (1, 416df) with p-value \<2e-16 and** $R^2$ **= 0.4773.**
+
+| Parameter | Estimate  | Std. Error | t-statistic | p-value |
+|-----------|:---------:|:----------:|:-----------:|:-------:|
+| Intercept | -52.18849 |  3.14692   |   -16.58    | \<2e-16 |
+| Wingspan  |  0.74191  |  0.03807   |    19.49    | \<2e-16 |
+
+The following takeaways are inferred from the analysis:
+
+-   The initial approach to use Wingspan Advantage appears to be the right approach for the regression model. This likely due the potential confounding impacts of having wingspan and height in the calculation.
+
+-   There does appear to be a linear relationship between Wingspan and Total Rebounds as demonstrated through visual inspection and the results of the linear regression
 
 -   The resulting linear model suggests that each additional inch of wingspan increases the total number of rebounds by nearly 0.5 and nearly half of the total variance was explained by the model
 
--   Residuals appear to be centered near zero but variance is not constant suggesting that specific inferences or predictions with this model may not be entirely accurate
+This data set includes additional variables that could be used to further explore and refine the regression model and improve the understanding of the impact of player's Wingspan impact on rebound performance. In pursuit of this goal, it is recommended that a multiple regression model be fit to the data considering the following additional variables:
 
-This data set includes additional variables that could be used to further explore and refine our understanding of wingspans impact on rebounding. In pursuit of this goal, we recommend employing a multiple regression model that could include the following variables:
+-   **Player Position:** Include categorical variables to account for differences in a player's position since this could impact rebound level due to differences in defensive roles.
 
--   Include categorical variables to account for differences in a player's position since this could impact rebound level due to differences in defensive roles
+-   **Player Height:** Incorporate player's height as this could help further refine the relationship between wingspan and and rebounds since this could be a confounding variable and could help isolate the true impact on rebound performance.
 
--   Incorporate player's height as this could help further refine the relationship between wingspan and and rebounds since this could be a confounding variable
+-   **Refine Rebounds Definition:** Apply the model to offensive vs. defensive rebounds to determine if there is meaningful difference and refine as appropriate.
 
--   Apply the model to offensive vs. defensive rebounds to determine if there is meaningful difference
-
-Further analysis of this relationship could help yield useful insights that could be used by those interested improved predictions for player performance.
+Further analysis of this relationship could help yield useful insights that could be used by those interested improved predictions for player performance that can help NBA teams improve their team performance.
 
 ## References
 
+Data Source:
+
 <https://data.scorenetwork.org/basketball/nba_wingspans_and_performance.html>
 
-##Appendix: Data Definitions
+Github Page:
+
+<https://github.com/janblackbu/Math-261-Projects>
+
+Foot Notes Sources:
+
+1: <https://en.wikipedia.org/wiki/Forbes_list_of_the_most_valuable_NBA_teams>
+
+2: <https://news.mit.edu/2025/basketball-analytics-investment-nba-wins-and-other-successes-0325>
+
+## Appendix: Data Definitions
+
+| Field Name | Definition | Data Type |
+|------------------------|------------------------|------------------------|
+| name | Player's full name | Text |
+| team | Player's team abbreviaation | Text |
+| position | Player's primary position | Categorical |
+| height_inches | Player's height in inches | Real |
+| wingspan_inches | Player's wingspan in inches | Real |
+| wingspan_advantage | wingspan_inches - height_inches | Real |
+| g | Games played during season | Integer |
+| mp | Minutes played during season | Integer |
+| pts | Points scored per 100 possessions | Real |
+| orb | Offensive rebounds per 100 possessions | Real |
+| drb | Defensive rebounds per 100 possessions | Real |
+| trb | Total Rebounds per 100 possessions | Real |
+| ast | Assists per 100 possessions | Real |
+| stl | Steals per 100 possessions | Real |
+| blk | Blocks per 100 possessions | Real |
+| o_trg | Offensive Rating: (Points Scored Possessions) / 100 possessions | Integer |
+| d_rtg | Defensive Rating: (Opponent Points / Opponent Possessions) / 100 possessions | Integer |
+| e_fg_percent | Effective Field Goal Percentages (FGM Made + 0.5 3 Point FGM Made) / FG Attempts | Real |
+| ft_percent | \% of Free Throws Made | Real |
+| fg_percent | \% of Field Goals Made | Real |
+| avg_dist_of_fg | Average distance of field goal attempts (in feet) | Real |
+| 2pt_rate | Proportion of shots that are 2pt attempts | Real |
+| 3pt_rate | Proportion of shots that are 3pt attempts | Real |
+| 2pt_percent | Field Goal % on 2pt attempts | Real |
+| 3pt_percent | Field Goal % on 3pt attempts | Real |
+| dunk_rate | \% of Field Goal attempts that are dunks | Real |

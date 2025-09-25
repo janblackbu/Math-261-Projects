@@ -1,4 +1,4 @@
-# Math-261-Projects
+# Math-261-Projects \n
 **Author:** Jan Blackburn
 **Original Date Submission:** 9/24/25
 **Purpose:** Project for Math 261A: Regression Theory and Methods

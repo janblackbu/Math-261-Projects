@@ -1,6 +1,6 @@
 # Math-261-Projects \n
-**Author:** Jan Blackburn
-**Original Date Submission:** 9/24/25
+**Author:** Jan Blackburn \n
+**Original Date Submission:** 9/24/25 \n
 **Purpose:** Project for Math 261A: Regression Theory and Methods
 **Title:** NBA Player Wingspan vs. Total Rebounds
 **Summary:** Study of using simple regression analysis to evaluate relationship between player's wingspan and potential contribution to total rebounds. 

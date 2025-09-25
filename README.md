@@ -11,5 +11,5 @@
 
 **Data Source:** https: Original data set curated by Cooper Olney and posted on SCORE Sports Data Repository under an open license at following link: //data.scorenetwork.org/basketball/nba_wingspans_and_performance.html
 
-**Code:** Analysis performed using R Studio and documents created in Quarto.
+**Code:** Analysis performed using R Studio and documents created in Quarto. Chat GPT 5.0 was used to refine and debug R-code for analysis and exhibits.
 

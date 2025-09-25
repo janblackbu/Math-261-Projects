@@ -5,7 +5,7 @@
 
 **Purpose:** Project for Math 261A: Regression Theory and Methods
 
-**Title:** NBA Player Wingspan vs. Total Rebounds
+**Title:** NBA Player Wingspan vs. Total Rebounds a Simple Regression Analysis
 
 **Summary:** Study of using simple regression analysis to evaluate relationship between player's wingspan and potential contribution to total rebounds. 
 
